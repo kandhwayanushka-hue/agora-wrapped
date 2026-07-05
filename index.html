@@ -10,13 +10,19 @@
 body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;justify-content:center;align-items:center;font-family:'Inter',sans-serif;user-select:none}
 #player{width:100%;max-width:420px;height:100dvh;max-height:780px;position:relative;overflow:hidden;background:#000;aspect-ratio:9/16}
 @media(min-width:421px){#player{border-radius:28px;border:1px solid #1a1a1a;box-shadow:0 0 80px rgba(200,168,76,.08)}}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;opacity:0;pointer-events:none;transition:opacity .8s ease,transform .8s ease;transform:scale(.96)}
-.slide.active{opacity:1;pointer-events:auto;transform:scale(1)}
-.slide.exit{opacity:0;transform:scale(1.04)}
 
-/* === GRADIENT BGS === */
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;opacity:0;pointer-events:none;transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1);transform:scale(.92) translateY(20px)}
+.slide.active{opacity:1;pointer-events:auto;transform:scale(1) translateY(0)}
+.slide.exit{opacity:0;transform:scale(1.03) translateY(-10px)}
+
+/* === SHIMMER OVERLAY (continuous motion across all slides) === */
+#shimmer{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.015) 50%,transparent 70%);background-size:200% 100%;animation:shimmerSweep 4s ease-in-out infinite}
+@keyframes shimmerSweep{0%,100%{background-position:200% 0}50%{background-position:-50% 0}}
+
+/* === GRADIENT BGS with breathing motion === */
 .bg{position:absolute;inset:0;transition:opacity 1.2s ease;opacity:0}
-.bg.active{opacity:1}
+.bg.active{opacity:1;animation:bgBreathe 6s ease-in-out infinite alternate}
+@keyframes bgBreathe{0%{transform:scale(1)}100%{transform:scale(1.08)}}
 .bg1{background:radial-gradient(ellipse at 30% 20%,#1a1a2e,#000 70%)}
 .bg2{background:radial-gradient(ellipse at 70% 30%,#1a0a0a,#000 70%)}
 .bg3{background:radial-gradient(ellipse at 50% 50%,#0a1a0a,#000 70%)}
@@ -27,59 +33,66 @@ body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;just
 .bg8{background:radial-gradient(ellipse at 50% 30%,#1a0a14,#000 70%)}
 .bg9{background:radial-gradient(ellipse at 30% 70%,#0a1a14,#000 70%)}
 .bg10{background:radial-gradient(ellipse at 50% 50%,#1a1414,#000 70%)}
+.bg11{background:radial-gradient(ellipse at 60% 40%,#0E0A1A,#000 70%)}
+.bg12{background:#000}
+
+/* === FLOATING AMBIENT ORBS === */
+.orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0;opacity:.15;animation:orbFloat 8s ease-in-out infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(30px,-30px) scale(1.3)}}
+.orb1{width:200px;height:200px;background:#C9A84C;top:-40px;right:-60px;animation-delay:0s}
+.orb2{width:150px;height:150px;background:#FF3B7F;bottom:-30px;left:-50px;animation-delay:-3s}
+.orb3{width:180px;height:180px;background:#00E5FF;top:50%;left:-80px;animation-delay:-6s}
 
 /* === PARTICLES === */
 #particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(200,168,76,.3);animation:particleFloat linear infinite}
-@keyframes particleFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;animation:particleFloat linear infinite}
+@keyframes particleFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}8%{opacity:.6}92%{opacity:.6}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+
+/* === GLASS CARD === */
+.glass-card{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:28px 24px;width:100%;max-width:320px;text-align:center;animation:cardFloat 4s ease-in-out infinite alternate}
+@keyframes cardFloat{0%{transform:translateY(0)}100%{transform:translateY(-6px)}}
+.glow{box-shadow:0 0 40px rgba(201,168,76,.15),0 0 80px rgba(201,168,76,.05)}
+
+/* === CONTINUOUS TEXT FLOATING === */
+.float-text{animation:textFloat 3s ease-in-out infinite alternate}
+@keyframes textFloat{0%{transform:translateY(0)}100%{transform:translateY(-4px)}}
 
 /* === SLIDE 1 — INTRO === */
 .intro-logo{font-size:14px;letter-spacing:8px;text-transform:uppercase;color:rgba(200,168,76,.5);font-weight:400;margin-bottom:12px;animation:fadeInUp 1.2s ease .3s both}
-.intro-title{font-family:'Playfair Display',serif;font-size:48px;font-weight:600;color:#C9A84C;text-align:center;line-height:1.1;animation:fadeInUp 1.2s ease .6s both}
+.intro-title{font-family:'Playfair Display',serif;font-size:48px;font-weight:600;color:#C9A84C;text-align:center;line-height:1.1;animation:fadeInUp 1.2s ease .6s both,introPulse 3s ease-in-out 2s infinite alternate}
+@keyframes introPulse{0%{text-shadow:0 0 20px rgba(201,168,76,.2)}100%{text-shadow:0 0 40px rgba(201,168,76,.5)}}
 .intro-title span{display:block;font-size:24px;font-weight:400;color:rgba(201,168,76,.5);font-style:italic;margin-top:6px;font-family:'Playfair Display',serif}
-.intro-year{font-size:72px;font-weight:900;color:#C9A84C;margin-top:8px;letter-spacing:-2px;animation:fadeInUp 1.2s ease .9s both}
+.intro-year{font-size:72px;font-weight:900;color:#C9A84C;margin-top:8px;letter-spacing:-2px;animation:fadeInUp 1.2s ease .9s both,introGoldPulse 2s ease-in-out 2s infinite alternate}
+@keyframes introGoldPulse{0%{opacity:.8}100%{opacity:1}}
 .intro-sub{font-size:13px;color:rgba(255,255,255,.3);letter-spacing:4px;text-transform:uppercase;margin-top:24px;animation:fadeInUp 1.2s ease 1.4s both}
 .intro-line{width:40px;height:1px;background:#C9A84C;margin:20px auto 0;opacity:.3;animation:fadeInUp 1.2s ease 1.2s both}
 
-/* === SLIDE 2 — YOUR YEAR === */
-.quote{font-family:'Playfair Display',serif;font-size:28px;color:rgba(255,255,255,.6);text-align:center;font-style:italic;line-height:1.4;max-width:300px}
+/* === SLIDE 2 — QUOTE === */
+.quote{font-family:'Playfair Display',serif;font-size:28px;color:rgba(255,255,255,.6);text-align:center;font-style:italic;line-height:1.4;max-width:300px;animation:textFloat 3.5s ease-in-out infinite alternate}
 .quote span{color:#C9A84C}
 .quote-sub{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:3px;text-transform:uppercase;margin-top:20px}
 
-/* === STAT SLIDES === */
+/* === STATS === */
 .stat-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px}
-.stat-number{font-size:64px;font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:4px}
-.stat-number.gold{color:#C9A84C}
-.stat-number.white{color:#fff}
-.stat-number.pink{color:#FF6B9D}
-.stat-number.cyan{color:#00E5FF}
-.stat-number.maroon{color:#C0392B}
-.stat-desc{font-size:14px;color:rgba(255,255,255,.4);font-weight:300}
-.stat-extra{font-size:12px;color:rgba(255,255,255,.2);margin-top:4px;font-style:italic}
-
-/* === COUNTER === */
 .counter-wrap{position:relative;height:80px;display:flex;align-items:center;justify-content:center}
-.counter{font-size:72px;font-weight:900;letter-spacing:-2px}
-
-/* === GLASS CARD === */
-.glass-card{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:28px 24px;width:100%;max-width:320px;text-align:center}
+.counter{font-size:72px;font-weight:900;letter-spacing:-2px;animation:textFloat 3s ease-in-out infinite alternate}
 
 /* === MEMBER CARD === */
-.member-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#8B6914);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#000;margin-bottom:12px}
+.member-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#8B6914);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#000;margin-bottom:12px;animation:avatarGlow 2s ease-in-out infinite alternate}
+@keyframes avatarGlow{0%{box-shadow:0 0 20px rgba(201,168,76,.2)}100%{box-shadow:0 0 50px rgba(201,168,76,.5)}}
 .member-name{font-size:28px;font-weight:700;color:#fff;margin-bottom:2px}
 .member-title{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:3px;text-transform:uppercase}
 .member-stat{font-size:14px;color:#C9A84C;margin-top:10px;font-weight:600}
-.glow{box-shadow:0 0 40px rgba(201,168,76,.15),0 0 80px rgba(201,168,76,.05)}
 
-/* === EMOJI SLIDE === */
-.emoji-big{font-size:80px;margin-bottom:16px;animation:emojiPop 1s ease both}
-@keyframes emojiPop{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+/* === EMOJI === */
+.emoji-big{font-size:80px;margin-bottom:16px;animation:emojiFloat 2s ease-in-out infinite alternate}
+@keyframes emojiFloat{0%{transform:translateY(0) scale(1)}100%{transform:translateY(-10px) scale(1.1)}}
 
-/* === PEAK HOUR CLOCK === */
+/* === CLOCK === */
 .clock{font-size:60px;font-weight:700;color:#fff;letter-spacing:2px;font-variant-numeric:tabular-nums}
 .clock-label{font-size:14px;color:rgba(255,255,255,.3);margin-top:4px}
 
-/* === PROGRESS RING === */
+/* === RING === */
 .ring-wrap{position:relative;width:120px;height:120px;margin-bottom:16px}
 .ring-wrap svg{transform:rotate(-90deg)}
 .ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:6}
@@ -97,14 +110,14 @@ body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;just
 .lb-msgs{font-size:12px;color:rgba(255,255,255,.3)}
 
 /* === FUN FACT === */
-.fact-icon{font-size:40px;margin-bottom:12px}
+.fact-icon{font-size:40px;margin-bottom:12px;animation:emojiFloat 2.5s ease-in-out infinite alternate}
 .fact-text{font-size:18px;color:rgba(255,255,255,.7);text-align:center;line-height:1.5;max-width:280px}
 .fact-text span{color:#C9A84C;font-weight:600}
 
 /* === OUTRO === */
-.outro-title{font-family:'Playfair Display',serif;font-size:36px;color:#C9A84C;text-align:center;line-height:1.2}
+.outro-title{font-family:'Playfair Display',serif;font-size:36px;color:#C9A84C;text-align:center;line-height:1.2;animation:textFloat 3s ease-in-out infinite alternate}
 .outro-title span{display:block;font-size:18px;color:rgba(201,168,76,.4);font-weight:400;margin-top:8px}
-.outro-year{font-size:60px;font-weight:900;color:#C9A84C;margin-top:10px;letter-spacing:-2px}
+.outro-year{font-size:60px;font-weight:900;color:#C9A84C;margin-top:10px;letter-spacing:-2px;animation:introGoldPulse 1.5s ease-in-out infinite alternate}
 .outro-tag{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:4px;text-transform:uppercase;margin-top:24px}
 
 /* === CONFETTI === */
@@ -113,38 +126,34 @@ body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;just
 
 /* === PROGRESS BAR === */
 #progress{position:absolute;top:0;left:0;right:0;height:3px;z-index:50;background:rgba(255,255,255,.05);border-radius:0}
-#progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#C9A84C,#FFD700,#C9A84C);border-radius:0;transition:width linear}
-#progress-fill.paused{animation-play-state:paused}
+#progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#C9A84C,#FFD700,#C9A84C);border-radius:0;transition:width linear;background-size:200% 100%;animation:progressShimmer 1s linear infinite}
+@keyframes progressShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* === TAP HINT === */
 .tap-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.15);letter-spacing:2px;text-transform:uppercase;z-index:10;animation:tapPulse 2s ease infinite}
 @keyframes tapPulse{0%,100%{opacity:.15}50%{opacity:.4}}
 .tap-hint.hidden{opacity:0;transition:opacity .5s}
 
-/* === SLIDE NUMBER === */
 .slide-num{position:absolute;top:16px;right:20px;font-size:11px;color:rgba(255,255,255,.12);letter-spacing:2px;z-index:10;font-weight:300}
 
-/* === UTILITY === */
 .fadeInUp{animation:fadeInUp 1s ease both}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.delay-1{animation-delay:.3s}
-.delay-2{animation-delay:.6s}
-.delay-3{animation-delay:.9s}
-.delay-4{animation-delay:1.2s}
-.text-gold{color:#C9A84C}
-.text-white{color:#fff}
-.text-muted{color:rgba(255,255,255,.3)}
-.mt-8{margin-top:8px}
-.mt-16{margin-top:16px}
-.mt-24{margin-top:24px}
 </style>
 </head>
 <body>
 
 <div id="player">
   <div id="progress"><div id="progress-fill"></div></div>
-  <div class="slide-num" id="slideNum">01 / 10</div>
+  <div class="slide-num" id="slideNum">01 / 12</div>
   <div class="tap-hint" id="tapHint">Tap to continue</div>
+
+  <!-- SHIMMER OVERLAY -->
+  <div id="shimmer"></div>
+
+  <!-- AMBIENT ORBS -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
 
   <!-- BG LAYERS -->
   <div class="bg bg1 active" id="bg1"></div>
@@ -157,11 +166,12 @@ body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;just
   <div class="bg bg8" id="bg8"></div>
   <div class="bg bg9" id="bg9"></div>
   <div class="bg bg10" id="bg10"></div>
+  <div class="bg bg11" id="bg11"></div>
+  <div class="bg bg12" id="bg12"></div>
 
-  <!-- PARTICLES -->
   <div id="particles"></div>
 
-  <!-- === SLIDE 1 — INTRO === -->
+  <!-- SLIDE 1 — INTRO -->
   <div class="slide active" data-slide="0">
     <div class="intro-logo">Debate Society</div>
     <div class="intro-title">AGORA<span>Wrapped</span></div>
@@ -170,79 +180,79 @@ body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;just
     <div class="intro-sub">Your year in review</div>
   </div>
 
-  <!-- === SLIDE 2 — YOUR YEAR BEGINS === -->
+  <!-- SLIDE 2 — QUOTE -->
   <div class="slide" data-slide="1">
     <div class="quote">"The year we <span>talked</span>, <span>debated</span>, and <span>built</span> something unforgettable."</div>
     <div class="quote-sub">AGORA DebSoc · 2025</div>
   </div>
 
-  <!-- === SLIDE 3 — TOTAL MESSAGES === -->
+  <!-- SLIDE 3 — TOTAL MESSAGES -->
   <div class="slide" data-slide="2">
     <div class="stat-label">Total Messages</div>
     <div class="glass-card">
       <div class="counter-wrap">
-        <div class="counter gold" id="counterMessages">0</div>
+        <div class="counter" style="color:#00E5FF" id="counterMessages">0</div>
       </div>
-      <div style="font-size:13px;color:rgba(255,255,255,.3);margin-top:4px">across 52 weeks</div>
+      <div style="font-size:13px;color:rgba(0,229,255,.5);margin-top:4px">from 59 members · 219 days</div>
     </div>
-    <div style="font-size:11px;color:rgba(255,255,255,.15);margin-top:16px;letter-spacing:2px">that's 39 texts a day</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.12);margin-top:16px;letter-spacing:2px">thats 51 texts a day</div>
   </div>
 
-  <!-- === SLIDE 4 — MOST ACTIVE MEMBER === -->
+  <!-- SLIDE 4 — MOST ACTIVE MEMBER -->
   <div class="slide" data-slide="3">
     <div class="stat-label">Most Active Member</div>
     <div class="glass-card glow" style="display:flex;flex-direction:column;align-items:center">
-      <div class="member-avatar">S</div>
+      <div class="member-avatar" style="background:linear-gradient(135deg,#FF3B7F,#C0392B)">S</div>
       <div class="member-name">Shreya</div>
       <div class="member-title">The Heart of AGORA</div>
-      <div class="member-stat">2,328 messages sent</div>
+      <div class="member-stat" style="color:#FF3B7F">2,328 messages sent</div>
     </div>
   </div>
 
-  <!-- === SLIDE 5 — MOST USED WORD === -->
+  <!-- SLIDE 5 — MOST USED WORD -->
   <div class="slide" data-slide="4">
     <div class="stat-label">Most Used Word</div>
-    <div class="glass-card" style="min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center">
-      <div style="font-size:48px;font-weight:700;color:#fff;letter-spacing:2px" id="typewriter"></div>
-      <div style="font-size:12px;color:rgba(255,255,255,.2);margin-top:12px">used 289 times</div>
+    <div class="glass-card" style="min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-color:rgba(0,255,148,.1)">
+      <div style="font-size:48px;font-weight:700;color:#00FF94;letter-spacing:2px;animation:textFloat 2.5s ease-in-out infinite alternate" id="typewriter"></div>
+      <div style="font-size:12px;color:rgba(0,255,148,.3);margin-top:12px">used 289 times</div>
     </div>
   </div>
 
-  <!-- === SLIDE 6 — MOST USED EMOJI === -->
+  <!-- SLIDE 6 — MOST USED EMOJI -->
   <div class="slide" data-slide="5">
     <div class="stat-label">Most Used Emoji</div>
-    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center">
+    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center;border-color:rgba(179,136,255,.1)">
       <div class="emoji-big">🤣</div>
-      <div style="font-size:22px;font-weight:600;color:rgba(255,255,255,.7)">834 times</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.2);margin-top:6px">rolling on the floor laughing</div>
+      <div style="font-size:22px;font-weight:600;color:#B388FF">834 times</div>
+      <div style="font-size:11px;color:rgba(179,136,255,.3);margin-top:6px">rolling on the floor laughing</div>
     </div>
   </div>
 
-  <!-- === SLIDE 7 — PEAK HOUR === -->
+  <!-- SLIDE 7 — PEAK HOUR -->
   <div class="slide" data-slide="6">
     <div class="stat-label">Peak Discussion Hour</div>
-    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center">
-      <div class="clock" id="clock">9:00</div>
-      <div class="clock-label">PM · 1,742 messages</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.15);margin-top:12px">the night owls owned this group</div>
+    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center;border-color:rgba(255,215,0,.1)">
+      <div class="clock" style="color:#FFD700" id="clock">9:00</div>
+      <div class="clock-label" style="color:rgba(255,215,0,.4)">PM · 1,742 messages</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.12);margin-top:12px">the night owls owned this group</div>
     </div>
   </div>
 
-  <!-- === SLIDE 8 — STICKER QUEEN === -->
+  <!-- SLIDE 8 — STICKER QUEEN -->
   <div class="slide" data-slide="7">
     <div class="stat-label">Sticker Queen</div>
-    <div class="glass-card glow" style="display:flex;flex-direction:column;align-items:center">
-      <div class="member-avatar" style="background:linear-gradient(135deg,#FF6B9D,#C0392B)">S</div>
+    <div class="glass-card glow" style="display:flex;flex-direction:column;align-items:center;border-color:rgba(255,107,107,.1)">
+      <div class="member-avatar" style="background:linear-gradient(135deg,#FF6B6B,#FF3B7F)">S</div>
       <div class="member-name">Shreya</div>
-      <div class="member-title">272 stickers sent</div>
-      <div class="member-stat" style="font-size:13px;color:rgba(255,255,255,.3);margin-top:8px">no emotion left un-stickered</div>
+      <div class="member-title" style="color:#FF6B6B">272 stickers sent</div>
+      <div class="member-stat" style="font-size:13px;color:rgba(255,255,255,.2);margin-top:8px">no emotion left un-stickered</div>
     </div>
   </div>
 
-  <!-- === SLIDE 9 — TOP 5 MEMBERS === -->
+  <!-- SLIDE 9 — TOP 5 MEMBERS -->
   <div class="slide" data-slide="8">
     <div class="stat-label">Top 5 Members</div>
-    <div class="glass-card" style="padding:20px 16px">
+    <div class="glass-card" style="padding:20px 16px;border-color:rgba(0,229,255,.1)">
       <div class="lb-item" data-idx="0">
         <div class="lb-rank">#1</div>
         <div class="lb-avatar" style="background:#C9A84C">S</div>
@@ -276,32 +286,32 @@ body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;just
     </div>
   </div>
 
-  <!-- === SLIDE 10 — PEAK MONTH === -->
+  <!-- SLIDE 10 — PEAK MONTH -->
   <div class="slide" data-slide="9">
     <div class="stat-label">Peak Month</div>
-    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center">
+    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center;border-color:rgba(255,179,0,.1)">
       <div class="ring-wrap" id="ringWrap">
         <svg width="120" height="120" viewBox="0 0 120 120">
           <circle class="ring-bg" cx="60" cy="60" r="50"/>
-          <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="50" style="stroke:#FFB300"/>
         </svg>
-        <div class="ring-text">Dec</div>
+        <div class="ring-text" style="color:#FFB300">Dec</div>
       </div>
-      <div style="font-size:28px;font-weight:700;color:#fff;margin-top:8px">3,276 messages</div>
-      <div class="ring-label">AMIMUN Prep · Holiday Energy</div>
+      <div style="font-size:28px;font-weight:700;color:#FFB300;margin-top:8px">3,276 messages</div>
+      <div class="ring-label" style="color:rgba(255,179,0,.4)">AMIMUN Prep · Holiday Energy</div>
     </div>
   </div>
 
-  <!-- === SLIDE 11 — FUN FACT === -->
+  <!-- SLIDE 11 — FUN FACT -->
   <div class="slide" data-slide="10">
     <div class="stat-label">Fun Fact</div>
-    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center">
-      <div class="fact-icon">🌙</div>
+    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center;border-color:rgba(232,232,240,.06)">
+      <div class="fact-icon">🔥</div>
       <div class="fact-text">The group peaked on <span>Feb 25, 2026</span> — <span>620 messages</span> in a single day</div>
     </div>
   </div>
 
-  <!-- === SLIDE 12 — OUTRO === -->
+  <!-- SLIDE 12 — OUTRO -->
   <div class="slide" data-slide="11">
     <div class="outro-title">Thank You<span>for an unforgettable year</span></div>
     <div class="outro-year">2025</div>
@@ -310,12 +320,10 @@ body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;just
 </div>
 
 <script>
-// ===== STATE =====
 const TOTAL_SLIDES = 12;
 let current = 0;
 let isAnimating = false;
 let autoTimer = null;
-let isPaused = false;
 
 const player = document.getElementById('player');
 const slides = document.querySelectorAll('.slide');
@@ -327,15 +335,17 @@ const tapHint = document.getElementById('tapHint');
 // ===== PARTICLES =====
 (function initParticles(){
   const c = document.getElementById('particles');
-  for(let i=0;i<45;i++){
+  const colors = ['rgba(201,168,76,.3)','rgba(255,107,157,.2)','rgba(0,229,255,.2)','rgba(255,215,0,.2)','rgba(179,136,255,.2)']
+  for(let i=0;i<60;i++){
     const p=document.createElement('div');
     p.className='particle';
-    const size=2+Math.random()*3;
+    const size=2+Math.random()*4;
     p.style.width=size+'px';p.style.height=size+'px';
     p.style.left=Math.random()*100+'%';
-    p.style.animationDuration=(8+Math.random()*20)+'s';
-    p.style.animationDelay=(Math.random()*15)+'s';
-    p.style.background=`rgba(${200+Math.random()*55},${168+Math.random()*50},${76+Math.random()*50},${.15+Math.random()*.25})`;
+    p.style.animationDuration=(10+Math.random()*25)+'s';
+    p.style.animationDelay=(Math.random()*20)+'s';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.boxShadow=`0 0 ${size*2}px ${p.style.background}`;
     c.appendChild(p);
   }
 })();
@@ -345,51 +355,41 @@ function goTo(idx){
   if(isAnimating || idx===current || idx<0 || idx>=TOTAL_SLIDES) return;
   isAnimating=true;
 
-  slides[current].classList.remove('active');
-  slides[current].classList.add('exit');
-  bgs[current].classList.remove('active');
+  slides.forEach(s=>{if(s.dataset.slide==current){s.classList.remove('active');s.classList.add('exit')}});
+  bgs.forEach(b=>{if(b.id==='bg'+(current+1))b.classList.remove('active')});
 
   current=idx;
 
-  slides[current].classList.add('active');
-  slides[current].classList.remove('exit');
-  bgs[current].classList.add('active');
+  slides.forEach(s=>{if(s.dataset.slide==current){s.classList.add('active');s.classList.remove('exit')}});
+  bgs.forEach(b=>{if(b.id==='bg'+(current+1))b.classList.add('active')});
 
   slideNum.textContent=String(current+1).padStart(2,'0')+' / '+String(TOTAL_SLIDES).padStart(2,'0');
-  if(current===TOTAL_SLIDES-1) tapHint.classList.add('hidden');
-  else tapHint.classList.remove('hidden');
+  tapHint.classList.toggle('hidden',current===TOTAL_SLIDES-1);
 
   resetProgress();
   triggerSlide(current);
-
-  setTimeout(()=>{isAnimating=false},600);
+  setTimeout(()=>{isAnimating=false},700);
 }
 
-function next(){
-  if(current<TOTAL_SLIDES-1) goTo(current+1);
-}
+function next(){if(current<TOTAL_SLIDES-1) goTo(current+1)}
+function prev(){if(current>0) goTo(current-1)}
 
-function prev(){
-  if(current>0) goTo(current-1);
-}
-
-// ===== PROGRESS BAR =====
-let progressStart=null;
+// ===== PROGRESS =====
 function resetProgress(){
   if(autoTimer){clearTimeout(autoTimer);autoTimer=null}
   fill.style.transition='none';
   fill.style.width='0%';
   void fill.offsetHeight;
-  fill.style.transition='width 6s linear';
+  fill.style.transition='width 5.5s linear';
   fill.style.width='100%';
-  autoTimer=setTimeout(()=>{if(current<TOTAL_SLIDES-1) next()},6200);
+  autoTimer=setTimeout(()=>{if(current<TOTAL_SLIDES-1) next()},5700);
 }
 
 // ===== SLIDE TRIGGERS =====
 function triggerSlide(idx){
   switch(idx){
     case 2: animateCounter('counterMessages',11195,2000);break;
-    case 4: typewriterEffect('typewriter','"bhai"',30);break;
+    case 4: typewriterEffect('typewriter','"bhai"',25);break;
     case 6: animateClock();break;
     case 9: animateRing(85);break;
     case 8: animateLeaderboard();break;
@@ -397,7 +397,6 @@ function triggerSlide(idx){
   }
 }
 
-// ===== COUNTER =====
 function animateCounter(id,target,duration){
   const el=document.getElementById(id);
   if(!el) return;
@@ -412,7 +411,6 @@ function animateCounter(id,target,duration){
   requestAnimationFrame(tick);
 }
 
-// ===== TYPEWRITER =====
 function typewriterEffect(id,text,speed){
   const el=document.getElementById(id);
   if(!el) return;
@@ -424,7 +422,6 @@ function typewriterEffect(id,text,speed){
   setTimeout(type,400);
 }
 
-// ===== CLOCK =====
 function animateClock(){
   const el=document.getElementById('clock');
   if(!el) return;
@@ -440,7 +437,6 @@ function animateClock(){
   requestAnimationFrame(tick);
 }
 
-// ===== RING =====
 function animateRing(pct){
   const ring=document.getElementById('ringFg');
   if(!ring) return;
@@ -449,31 +445,27 @@ function animateRing(pct){
   setTimeout(()=>{ring.style.strokeDashoffset=target},300);
 }
 
-// ===== LEADERBOARD =====
 function animateLeaderboard(){
-  const items=document.querySelectorAll('.lb-item');
-  items.forEach((item,i)=>{
+  document.querySelectorAll('.lb-item').forEach((item,i)=>{
     setTimeout(()=>{item.classList.add('show')},i*200+200);
   });
 }
 
-// ===== CONFETTI =====
 function launchConfetti(){
-  const colors=['#C9A84C','#FFD700','#FF6B9D','#00E5FF','#C0392B','#fff','#8B6914','#FF3B7F'];
-  const shapes=['square','circle','triangle'];
-  for(let i=0;i<80;i++){
+  const colors=['#C9A84C','#FFD700','#FF6B9D','#00E5FF','#C0392B','#fff','#8B6914','#FF3B7F','#B388FF','#00FF94'];
+  for(let i=0;i<120;i++){
     const c=document.createElement('div');
     c.className='confetti-piece';
     c.style.left=Math.random()*100+'vw';
-    c.style.width=(6+Math.random()*8)+'px';
-    c.style.height=(6+Math.random()*8)+'px';
+    c.style.width=(5+Math.random()*8)+'px';
+    c.style.height=(5+Math.random()*8)+'px';
     c.style.background=colors[Math.floor(Math.random()*colors.length)];
     c.style.borderRadius=Math.random()>.5?'50%':'2px';
-    c.style.animationDuration=(2+Math.random()*3)+'s';
-    c.style.animationDelay=(Math.random()*2)+'s';
+    c.style.animationDuration=(2+Math.random()*4)+'s';
+    c.style.animationDelay=(Math.random()*2.5)+'s';
     c.style.transform=`rotate(${Math.random()*360}deg)`;
     document.body.appendChild(c);
-    setTimeout(()=>c.remove(),6000);
+    setTimeout(()=>c.remove(),7000);
   }
 }
 
@@ -482,8 +474,8 @@ player.addEventListener('click',(e)=>{
   if(isAnimating) return;
   const rect=player.getBoundingClientRect();
   const x=e.clientX-rect.left;
-  if(x<rect.width*.3){prev()}
-  else{next()}
+  if(x<rect.width*.3) prev();
+  else next();
 });
 
 document.addEventListener('keydown',(e)=>{
@@ -491,7 +483,6 @@ document.addEventListener('keydown',(e)=>{
   if(e.key==='ArrowLeft') prev();
 });
 
-// ===== TOUCH ====
 let touchX=0;
 player.addEventListener('touchstart',(e)=>{touchX=e.changedTouches[0].screenX});
 player.addEventListener('touchend',(e)=>{
@@ -502,13 +493,11 @@ player.addEventListener('touchend',(e)=>{
   }
 });
 
-// ===== AUTO-PLAY RESET ON VISIBILITY =====
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){if(autoTimer){clearTimeout(autoTimer)}}
-  else{resetProgress()}
+  if(document.hidden){if(autoTimer)clearTimeout(autoTimer)}
+  else resetProgress();
 });
 
-// ===== INIT =====
 goTo(0);
 </script>
 </body>
