@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AGORA Wrapped 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#000;overflow:hidden;height:100dvh;width:100vw;display:flex;justify-content:center;align-items:center;font-family:'Inter',sans-serif;user-select:none}
+#player{width:100%;max-width:420px;height:100dvh;max-height:780px;position:relative;overflow:hidden;background:#000;aspect-ratio:9/16}
+@media(min-width:421px){#player{border-radius:28px;border:1px solid #1a1a1a;box-shadow:0 0 80px rgba(200,168,76,.08)}}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;opacity:0;pointer-events:none;transition:opacity .8s ease,transform .8s ease;transform:scale(.96)}
+.slide.active{opacity:1;pointer-events:auto;transform:scale(1)}
+.slide.exit{opacity:0;transform:scale(1.04)}
+
+/* === GRADIENT BGS === */
+.bg{position:absolute;inset:0;transition:opacity 1.2s ease;opacity:0}
+.bg.active{opacity:1}
+.bg1{background:radial-gradient(ellipse at 30% 20%,#1a1a2e,#000 70%)}
+.bg2{background:radial-gradient(ellipse at 70% 30%,#1a0a0a,#000 70%)}
+.bg3{background:radial-gradient(ellipse at 50% 50%,#0a1a0a,#000 70%)}
+.bg4{background:radial-gradient(ellipse at 80% 20%,#1a0a1a,#000 70%)}
+.bg5{background:radial-gradient(ellipse at 20% 80%,#0a0a1e,#000 70%)}
+.bg6{background:radial-gradient(ellipse at 60% 40%,#1a1410,#000 70%)}
+.bg7{background:radial-gradient(ellipse at 40% 60%,#0a141a,#000 70%)}
+.bg8{background:radial-gradient(ellipse at 50% 30%,#1a0a14,#000 70%)}
+.bg9{background:radial-gradient(ellipse at 30% 70%,#0a1a14,#000 70%)}
+.bg10{background:radial-gradient(ellipse at 50% 50%,#1a1414,#000 70%)}
+
+/* === PARTICLES === */
+#particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(200,168,76,.3);animation:particleFloat linear infinite}
+@keyframes particleFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+
+/* === SLIDE 1 — INTRO === */
+.intro-logo{font-size:14px;letter-spacing:8px;text-transform:uppercase;color:rgba(200,168,76,.5);font-weight:400;margin-bottom:12px;animation:fadeInUp 1.2s ease .3s both}
+.intro-title{font-family:'Playfair Display',serif;font-size:48px;font-weight:600;color:#C9A84C;text-align:center;line-height:1.1;animation:fadeInUp 1.2s ease .6s both}
+.intro-title span{display:block;font-size:24px;font-weight:400;color:rgba(201,168,76,.5);font-style:italic;margin-top:6px;font-family:'Playfair Display',serif}
+.intro-year{font-size:72px;font-weight:900;color:#C9A84C;margin-top:8px;letter-spacing:-2px;animation:fadeInUp 1.2s ease .9s both}
+.intro-sub{font-size:13px;color:rgba(255,255,255,.3);letter-spacing:4px;text-transform:uppercase;margin-top:24px;animation:fadeInUp 1.2s ease 1.4s both}
+.intro-line{width:40px;height:1px;background:#C9A84C;margin:20px auto 0;opacity:.3;animation:fadeInUp 1.2s ease 1.2s both}
+
+/* === SLIDE 2 — YOUR YEAR === */
+.quote{font-family:'Playfair Display',serif;font-size:28px;color:rgba(255,255,255,.6);text-align:center;font-style:italic;line-height:1.4;max-width:300px}
+.quote span{color:#C9A84C}
+.quote-sub{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:3px;text-transform:uppercase;margin-top:20px}
+
+/* === STAT SLIDES === */
+.stat-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px}
+.stat-number{font-size:64px;font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:4px}
+.stat-number.gold{color:#C9A84C}
+.stat-number.white{color:#fff}
+.stat-number.pink{color:#FF6B9D}
+.stat-number.cyan{color:#00E5FF}
+.stat-number.maroon{color:#C0392B}
+.stat-desc{font-size:14px;color:rgba(255,255,255,.4);font-weight:300}
+.stat-extra{font-size:12px;color:rgba(255,255,255,.2);margin-top:4px;font-style:italic}
+
+/* === COUNTER === */
+.counter-wrap{position:relative;height:80px;display:flex;align-items:center;justify-content:center}
+.counter{font-size:72px;font-weight:900;letter-spacing:-2px}
+
+/* === GLASS CARD === */
+.glass-card{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:28px 24px;width:100%;max-width:320px;text-align:center}
+
+/* === MEMBER CARD === */
+.member-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#8B6914);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#000;margin-bottom:12px}
+.member-name{font-size:28px;font-weight:700;color:#fff;margin-bottom:2px}
+.member-title{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:3px;text-transform:uppercase}
+.member-stat{font-size:14px;color:#C9A84C;margin-top:10px;font-weight:600}
+.glow{box-shadow:0 0 40px rgba(201,168,76,.15),0 0 80px rgba(201,168,76,.05)}
+
+/* === EMOJI SLIDE === */
+.emoji-big{font-size:80px;margin-bottom:16px;animation:emojiPop 1s ease both}
+@keyframes emojiPop{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+
+/* === PEAK HOUR CLOCK === */
+.clock{font-size:60px;font-weight:700;color:#fff;letter-spacing:2px;font-variant-numeric:tabular-nums}
+.clock-label{font-size:14px;color:rgba(255,255,255,.3);margin-top:4px}
+
+/* === PROGRESS RING === */
+.ring-wrap{position:relative;width:120px;height:120px;margin-bottom:16px}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:6}
+.ring-fg{fill:none;stroke:#C9A84C;stroke-width:6;stroke-linecap:round;stroke-dasharray:314;stroke-dashoffset:314;transition:stroke-dashoffset 2s ease}
+.ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff}
+.ring-label{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+
+/* === LEADERBOARD === */
+.lb-item{display:flex;align-items:center;gap:12px;width:100%;max-width:300px;padding:10px 14px;margin-bottom:6px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);opacity:0;transform:translateX(-20px)}
+.lb-item.show{animation:lbIn .4s ease forwards}
+@keyframes lbIn{to{opacity:1;transform:translateX(0)}}
+.lb-rank{font-size:12px;font-weight:700;color:#C9A84C;width:24px;text-align:center}
+.lb-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000}
+.lb-name{flex:1;font-size:14px;font-weight:600;color:#fff}
+.lb-msgs{font-size:12px;color:rgba(255,255,255,.3)}
+
+/* === FUN FACT === */
+.fact-icon{font-size:40px;margin-bottom:12px}
+.fact-text{font-size:18px;color:rgba(255,255,255,.7);text-align:center;line-height:1.5;max-width:280px}
+.fact-text span{color:#C9A84C;font-weight:600}
+
+/* === OUTRO === */
+.outro-title{font-family:'Playfair Display',serif;font-size:36px;color:#C9A84C;text-align:center;line-height:1.2}
+.outro-title span{display:block;font-size:18px;color:rgba(201,168,76,.4);font-weight:400;margin-top:8px}
+.outro-year{font-size:60px;font-weight:900;color:#C9A84C;margin-top:10px;letter-spacing:-2px}
+.outro-tag{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:4px;text-transform:uppercase;margin-top:24px}
+
+/* === CONFETTI === */
+.confetti-piece{position:fixed;width:10px;height:10px;top:-10px;z-index:100;pointer-events:none;animation:confettiFall linear forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+/* === PROGRESS BAR === */
+#progress{position:absolute;top:0;left:0;right:0;height:3px;z-index:50;background:rgba(255,255,255,.05);border-radius:0}
+#progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#C9A84C,#FFD700,#C9A84C);border-radius:0;transition:width linear}
+#progress-fill.paused{animation-play-state:paused}
+
+/* === TAP HINT === */
+.tap-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.15);letter-spacing:2px;text-transform:uppercase;z-index:10;animation:tapPulse 2s ease infinite}
+@keyframes tapPulse{0%,100%{opacity:.15}50%{opacity:.4}}
+.tap-hint.hidden{opacity:0;transition:opacity .5s}
+
+/* === SLIDE NUMBER === */
+.slide-num{position:absolute;top:16px;right:20px;font-size:11px;color:rgba(255,255,255,.12);letter-spacing:2px;z-index:10;font-weight:300}
+
+/* === UTILITY === */
+.fadeInUp{animation:fadeInUp 1s ease both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.delay-1{animation-delay:.3s}
+.delay-2{animation-delay:.6s}
+.delay-3{animation-delay:.9s}
+.delay-4{animation-delay:1.2s}
+.text-gold{color:#C9A84C}
+.text-white{color:#fff}
+.text-muted{color:rgba(255,255,255,.3)}
+.mt-8{margin-top:8px}
+.mt-16{margin-top:16px}
+.mt-24{margin-top:24px}
+</style>
+</head>
+<body>
+
+<div id="player">
+  <div id="progress"><div id="progress-fill"></div></div>
+  <div class="slide-num" id="slideNum">01 / 10</div>
+  <div class="tap-hint" id="tapHint">Tap to continue</div>
+
+  <!-- BG LAYERS -->
+  <div class="bg bg1 active" id="bg1"></div>
+  <div class="bg bg2" id="bg2"></div>
+  <div class="bg bg3" id="bg3"></div>
+  <div class="bg bg4" id="bg4"></div>
+  <div class="bg bg5" id="bg5"></div>
+  <div class="bg bg6" id="bg6"></div>
+  <div class="bg bg7" id="bg7"></div>
+  <div class="bg bg8" id="bg8"></div>
+  <div class="bg bg9" id="bg9"></div>
+  <div class="bg bg10" id="bg10"></div>
+
+  <!-- PARTICLES -->
+  <div id="particles"></div>
+
+  <!-- === SLIDE 1 — INTRO === -->
+  <div class="slide active" data-slide="0">
+    <div class="intro-logo">Debate Society</div>
+    <div class="intro-title">AGORA<span>Wrapped</span></div>
+    <div class="intro-year">2025</div>
+    <div class="intro-line"></div>
+    <div class="intro-sub">Your year in review</div>
+  </div>
+
+  <!-- === SLIDE 2 — YOUR YEAR BEGINS === -->
+  <div class="slide" data-slide="1">
+    <div class="quote">"The year we <span>talked</span>, <span>debated</span>, and <span>built</span> something unforgettable."</div>
+    <div class="quote-sub">AGORA DebSoc · 2025</div>
+  </div>
+
+  <!-- === SLIDE 3 — TOTAL MESSAGES === -->
+  <div class="slide" data-slide="2">
+    <div class="stat-label">Total Messages</div>
+    <div class="glass-card">
+      <div class="counter-wrap">
+        <div class="counter gold" id="counterMessages">0</div>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.3);margin-top:4px">across 52 weeks</div>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.15);margin-top:16px;letter-spacing:2px">that's 39 texts a day</div>
+  </div>
+
+  <!-- === SLIDE 4 — MOST ACTIVE MEMBER === -->
+  <div class="slide" data-slide="3">
+    <div class="stat-label">Most Active Member</div>
+    <div class="glass-card glow" style="display:flex;flex-direction:column;align-items:center">
+      <div class="member-avatar">A</div>
+      <div class="member-name">Ananya</div>
+      <div class="member-title">The Heart of AGORA</div>
+      <div class="member-stat">2,847 messages sent</div>
+    </div>
+  </div>
+
+  <!-- === SLIDE 5 — MOST USED WORD === -->
+  <div class="slide" data-slide="4">
+    <div class="stat-label">Most Used Word</div>
+    <div class="glass-card" style="min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <div style="font-size:48px;font-weight:700;color:#fff;letter-spacing:2px" id="typewriter"></div>
+      <div style="font-size:12px;color:rgba(255,255,255,.2);margin-top:12px">used 1,204 times</div>
+    </div>
+  </div>
+
+  <!-- === SLIDE 6 — MOST USED EMOJI === -->
+  <div class="slide" data-slide="5">
+    <div class="stat-label">Most Used Emoji</div>
+    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center">
+      <div class="emoji-big">😭</div>
+      <div style="font-size:22px;font-weight:600;color:rgba(255,255,255,.7)">847 times</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.2);margin-top:6px">we felt that</div>
+    </div>
+  </div>
+
+  <!-- === SLIDE 7 — PEAK HOUR === -->
+  <div class="slide" data-slide="6">
+    <div class="stat-label">Peak Discussion Hour</div>
+    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center">
+      <div class="clock" id="clock">11:00</div>
+      <div class="clock-label">PM · the night owls won</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.15);margin-top:12px">67% of all messages after sunset</div>
+    </div>
+  </div>
+
+  <!-- === SLIDE 8 — LONGEST GMEET === -->
+  <div class="slide" data-slide="7">
+    <div class="stat-label">Longest Google Meet</div>
+    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center">
+      <div class="ring-wrap" id="ringWrap">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="50"/>
+        </svg>
+        <div class="ring-text">4h 12m</div>
+      </div>
+      <div class="ring-label">Athenium Preparations</div>
+    </div>
+  </div>
+
+  <!-- === SLIDE 9 — TOP 5 MEMBERS === -->
+  <div class="slide" data-slide="8">
+    <div class="stat-label">Top 5 Members</div>
+    <div class="glass-card" style="padding:20px 16px">
+      <div class="lb-item" data-idx="0">
+        <div class="lb-rank">#1</div>
+        <div class="lb-avatar" style="background:#C9A84C">A</div>
+        <div class="lb-name">Ananya</div>
+        <div class="lb-msgs">2,847</div>
+      </div>
+      <div class="lb-item" data-idx="1">
+        <div class="lb-rank">#2</div>
+        <div class="lb-avatar" style="background:#FF6B9D">A</div>
+        <div class="lb-name">Apurva</div>
+        <div class="lb-msgs">2,103</div>
+      </div>
+      <div class="lb-item" data-idx="2">
+        <div class="lb-rank">#3</div>
+        <div class="lb-avatar" style="background:#00E5FF">A</div>
+        <div class="lb-name">Aditya</div>
+        <div class="lb-msgs">1,876</div>
+      </div>
+      <div class="lb-item" data-idx="3">
+        <div class="lb-rank">#4</div>
+        <div class="lb-avatar" style="background:#C0392B">A</div>
+        <div class="lb-name">Anushka</div>
+        <div class="lb-msgs">1,542</div>
+      </div>
+      <div class="lb-item" data-idx="4">
+        <div class="lb-rank">#5</div>
+        <div class="lb-avatar" style="background:#8B6914">A</div>
+        <div class="lb-name">Arjun</div>
+        <div class="lb-msgs">1,298</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === SLIDE 10 — FUN FACT === -->
+  <div class="slide" data-slide="9">
+    <div class="stat-label">Fun Fact</div>
+    <div class="glass-card" style="display:flex;flex-direction:column;align-items:center">
+      <div class="fact-icon">🌙</div>
+      <div class="fact-text">The most heated debate started at <span>2:34 AM</span> and lasted <span>3 hours</span></div>
+    </div>
+  </div>
+
+  <!-- === SLIDE 11 — OUTRO === -->
+  <div class="slide" data-slide="10">
+    <div class="outro-title">Thank You<span>for an unforgettable year</span></div>
+    <div class="outro-year">2025</div>
+    <div class="outro-tag">AGORA Debate Society</div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+const TOTAL_SLIDES = 11;
+let current = 0;
+let isAnimating = false;
+let autoTimer = null;
+let isPaused = false;
+
+const player = document.getElementById('player');
+const slides = document.querySelectorAll('.slide');
+const bgs = document.querySelectorAll('.bg');
+const fill = document.getElementById('progress-fill');
+const slideNum = document.getElementById('slideNum');
+const tapHint = document.getElementById('tapHint');
+
+// ===== PARTICLES =====
+(function initParticles(){
+  const c = document.getElementById('particles');
+  for(let i=0;i<45;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    const size=2+Math.random()*3;
+    p.style.width=size+'px';p.style.height=size+'px';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(8+Math.random()*20)+'s';
+    p.style.animationDelay=(Math.random()*15)+'s';
+    p.style.background=`rgba(${200+Math.random()*55},${168+Math.random()*50},${76+Math.random()*50},${.15+Math.random()*.25})`;
+    c.appendChild(p);
+  }
+})();
+
+// ===== NAVIGATION =====
+function goTo(idx){
+  if(isAnimating || idx===current || idx<0 || idx>=TOTAL_SLIDES) return;
+  isAnimating=true;
+
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit');
+  bgs[current].classList.remove('active');
+
+  current=idx;
+
+  slides[current].classList.add('active');
+  slides[current].classList.remove('exit');
+  bgs[current].classList.add('active');
+
+  slideNum.textContent=String(current+1).padStart(2,'0')+' / '+String(TOTAL_SLIDES).padStart(2,'0');
+  if(current===TOTAL_SLIDES-1) tapHint.classList.add('hidden');
+  else tapHint.classList.remove('hidden');
+
+  resetProgress();
+  triggerSlide(current);
+
+  setTimeout(()=>{isAnimating=false},600);
+}
+
+function next(){
+  if(current<TOTAL_SLIDES-1) goTo(current+1);
+}
+
+function prev(){
+  if(current>0) goTo(current-1);
+}
+
+// ===== PROGRESS BAR =====
+let progressStart=null;
+function resetProgress(){
+  if(autoTimer){clearTimeout(autoTimer);autoTimer=null}
+  fill.style.transition='none';
+  fill.style.width='0%';
+  void fill.offsetHeight;
+  fill.style.transition='width 6s linear';
+  fill.style.width='100%';
+  autoTimer=setTimeout(()=>{if(current<TOTAL_SLIDES-1) next()},6200);
+}
+
+// ===== SLIDE TRIGGERS =====
+function triggerSlide(idx){
+  switch(idx){
+    case 2: animateCounter('counterMessages',14287,2000);break;
+    case 4: typewriterEffect('typewriter','"bhai"',30);break;
+    case 6: animateClock();break;
+    case 7: animateRing(78);break;
+    case 8: animateLeaderboard();break;
+    case 10: launchConfetti();break;
+  }
+}
+
+// ===== COUNTER =====
+function animateCounter(id,target,duration){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const start=performance.now();
+  function tick(now){
+    const p=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.floor(ease*target).toLocaleString();
+    if(p<1) requestAnimationFrame(tick);
+    else el.textContent=target.toLocaleString();
+  }
+  requestAnimationFrame(tick);
+}
+
+// ===== TYPEWRITER =====
+function typewriterEffect(id,text,speed){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.textContent='';
+  let i=0;
+  function type(){
+    if(i<text.length){el.textContent+=text[i];i++;setTimeout(type,speed)}
+  }
+  setTimeout(type,400);
+}
+
+// ===== CLOCK =====
+function animateClock(){
+  const el=document.getElementById('clock');
+  if(!el) return;
+  const start=performance.now();
+  function tick(now){
+    const p=Math.min((now-start)/1500,1);
+    const h=Math.floor(p*11);
+    const m=Math.floor(p*60)%60;
+    el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+    if(p<1) requestAnimationFrame(tick);
+    else el.textContent='11:00';
+  }
+  requestAnimationFrame(tick);
+}
+
+// ===== RING =====
+function animateRing(pct){
+  const ring=document.getElementById('ringFg');
+  if(!ring) return;
+  const circumference=2*Math.PI*50;
+  const target=(1-pct/100)*circumference;
+  setTimeout(()=>{ring.style.strokeDashoffset=target},300);
+}
+
+// ===== LEADERBOARD =====
+function animateLeaderboard(){
+  const items=document.querySelectorAll('.lb-item');
+  items.forEach((item,i)=>{
+    setTimeout(()=>{item.classList.add('show')},i*200+200);
+  });
+}
+
+// ===== CONFETTI =====
+function launchConfetti(){
+  const colors=['#C9A84C','#FFD700','#FF6B9D','#00E5FF','#C0392B','#fff','#8B6914','#FF3B7F'];
+  const shapes=['square','circle','triangle'];
+  for(let i=0;i<80;i++){
+    const c=document.createElement('div');
+    c.className='confetti-piece';
+    c.style.left=Math.random()*100+'vw';
+    c.style.width=(6+Math.random()*8)+'px';
+    c.style.height=(6+Math.random()*8)+'px';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.borderRadius=Math.random()>.5?'50%':'2px';
+    c.style.animationDuration=(2+Math.random()*3)+'s';
+    c.style.animationDelay=(Math.random()*2)+'s';
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),6000);
+  }
+}
+
+// ===== EVENTS =====
+player.addEventListener('click',(e)=>{
+  if(isAnimating) return;
+  const rect=player.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  if(x<rect.width*.3){prev()}
+  else{next()}
+});
+
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='ArrowRight'||e.key===' ') next();
+  if(e.key==='ArrowLeft') prev();
+});
+
+// ===== TOUCH ====
+let touchX=0;
+player.addEventListener('touchstart',(e)=>{touchX=e.changedTouches[0].screenX});
+player.addEventListener('touchend',(e)=>{
+  const diff=touchX-e.changedTouches[0].screenX;
+  if(Math.abs(diff)>50){
+    if(diff>0) next();
+    else prev();
+  }
+});
+
+// ===== AUTO-PLAY RESET ON VISIBILITY =====
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){if(autoTimer){clearTimeout(autoTimer)}}
+  else{resetProgress()}
+});
+
+// ===== INIT =====
+goTo(0);
+</script>
+</body>
+</html>
